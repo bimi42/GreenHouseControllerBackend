@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+
+  database:
+    image: mysql/mysql-server
+    environment:
+      MYSQL_ROOT_PASSWORD: W4lt1
+      MYSQL_DATABASE: db_measurement
+      MYSQL_USER: springuser
+      MYSQL_PASSWORD: Walter12
+    ports:
+      - '3306:3306'
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:3306"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
+
+  rabbitmq:
+    image: rabbitmq:3.8-management
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbituser
+      RABBITMQ_DEFAULT_PASS: FelH4szn4l0
+      RABBITMQ_DEFAULT_VHOST: greenhouse.dev
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:15672"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
+
+  backend:
+    image: raptor342/greenhouse
+    environment:
+      IP: 192.168.10.236
+    restart: on-failure
+    depends_on:
+      - "database"
+      - "rabbitmq"
+    ports:
+      - '8080:8080'
+
