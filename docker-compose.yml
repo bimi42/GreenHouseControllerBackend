@@ -8,7 +8,7 @@ services:
       MYSQL_ROOT_PASSWORD: W4lt1
       MYSQL_DATABASE: db_measurement
       MYSQL_USER: springuser
-      MYSQL_PASSWORD: Walter12
+      MYSQL_PASSWORD: password
     ports:
       - '3306:3306'
     healthcheck:
